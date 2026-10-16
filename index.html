@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colegio Montano - Interactive Guide: Listening & Modal Verbs</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --cm-blue: #1269A8;
+            --cm-yellow: #F7D615;
+            --cm-teal: #54887D;
+            --cm-light-blue: #88B5C7;
+            --cm-olive: #A6B046;
+            --cm-soft-white: #F2F5E9;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Nunito', sans-serif;
+            background-color: #e5ebf0;
+            color: #2d3748;
+        }
+
+        .bg-cm-blue { background-color: var(--cm-blue); }
+        .text-cm-blue { color: var(--cm-blue); }
+        .border-cm-blue { border-color: var(--cm-blue); }
+
+        .bg-cm-yellow { background-color: var(--cm-yellow); }
+        .text-cm-yellow { color: var(--cm-yellow); }
+        .border-cm-yellow { border-color: var(--cm-yellow); }
+
+        .bg-cm-teal { background-color: var(--cm-teal); }
+        .text-cm-teal { color: var(--cm-teal); }
+
+        .bg-cm-light-blue { background-color: var(--cm-light-blue); }
+        .bg-cm-olive { background-color: var(--cm-olive); }
+        .bg-cm-soft-white { background-color: var(--cm-soft-white); }
+
+        /* Whiteboard Frame Style */
+        .whiteboard-frame {
+            border: 10px solid #d1d5db;
+            border-image: linear-gradient(to bottom, #f3f4f6, #d1d5db) 1;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: var(--cm-soft-white);
+        }
+
+        .tab-btn {
+            transition: all 0.25s ease-in-out;
+        }
+        .tab-btn.active {
+            background-color: var(--cm-blue);
+            color: #ffffff;
+            border-bottom: 4px solid var(--cm-yellow);
+            font-weight: bold;
+        }
+
+        /* Speech bubble styles with explicit high-contrast colors */
+        .speech-bubble-left {
+            position: relative;
+            background: #ffffff;
+            color: #111827;
+            border-radius: .4em;
+            border: 2px solid var(--cm-blue);
+        }
+        .speech-bubble-left:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-right-color: #ffffff;
+            border-left: 0;
+            margin-top: -10px;
+            margin-left: -10px;
+        }
+
+        .speech-bubble-right {
+            position: relative;
+            background: #f0fdf4;
+            color: #111827;
+            border-radius: .4em;
+            border: 2px solid var(--cm-teal);
+        }
+        .speech-bubble-right:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: #f0fdf4;
+            border-right: 0;
+            margin-top: -10px;
+            margin-right: -10px;
+        }
+
+        /* Scenario card active styling */
+        .scenario-card {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .scenario-card.active-scenario {
+            border-color: var(--cm-blue) !important;
+            background-color: #eff6ff !important;
+            box-shadow: 0 4px 6px -1px rgba(18, 105, 168, 0.2);
+        }
+
+        /* Pulsing recording indicator */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .recording-pulse {
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--cm-light-blue);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--cm-blue);
+        }
+    </style>
+</head>
+<body class="p-2 sm:p-4 min-h-screen">
+
+    <div id="whiteboard" class="whiteboard-frame max-w-7xl mx-auto my-2 flex flex-col min-h-[90vh]">
+
+        <!-- HEADER / BOARD TOOLBAR -->
+        <header class="bg-cm-blue text-white p-3 sm:p-4 flex flex-wrap justify-between items-center border-b-4 border-cm-yellow shadow-md">
+            <div class="flex items-center space-x-3 mb-2 sm:mb-0">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEop0yf6lZ7Jk9MILZxF1rBj4Oqs5esyhIQ&s" 
+                     alt="Colegio Montano Logo" 
+                     class="h-12 w-12 object-contain bg-white p-1 rounded-full border-2 border-cm-yellow shadow-sm"
+                     onerror="this.src='https://placehold.co/100x100/1269A8/ffffff?text=CM'">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-wide flex items-center gap-2">
+                        <span>COLEGIO MONTANO</span>
+                        <span class="text-xs bg-cm-yellow text-gray-900 font-bold px-2 py-0.5 rounded-full uppercase">Digital Board</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-blue-100">Grade: 5th Primary ESL • Topic: Listening & Speaking with Modal Verbs at a Restaurant</p>
+                </div>
+            </div>
+
+            <!-- Fullscreen & Audio Status controls -->
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAudioEngine()" id="audioToggleBtn" title="Toggle Sound Engine" class="bg-cm-teal hover:bg-opacity-80 text-white font-semibold py-1.5 px-3 rounded-lg text-sm flex items-center space-x-1 shadow transition">
+                    <i class="fas fa-volume-up"></i>
+                    <span class="hidden md:inline">TTS Audio: Active</span>
+                </button>
+                <button onclick="toggleFullscreen()" title="Fullscreen" class="bg-cm-yellow hover:bg-yellow-400 text-gray-900 font-bold py-1.5 px-3 rounded-lg text-sm flex items-center space-x-1 shadow transition">
+                    <i class="fas fa-expand"></i>
+                    <span class="hidden sm:inline">⛶ Fullscreen</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="bg-gray-100 border-b border-gray-300 flex overflow-x-auto text-sm font-semibold text-gray-700 select-none">
+            <button onclick="switchTab('teoria')" id="tab-teoria" class="tab-btn active px-4 py-3 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fas fa-book-open text-cm-yellow"></i>
+                <span>1. Grammar Theory</span>
+            </button>
+            <button onclick="switchTab('ejemplos')" id="tab-ejemplos" class="tab-btn px-4 py-3 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fas fa-lightbulb text-cm-yellow"></i>
+                <span>2. Solved Examples (15)</span>
+            </button>
+            <button onclick="switchTab('simulador')" id="tab-simulador" class="tab-btn px-4 py-3 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fas fa-microphone-alt text-cm-yellow"></i>
+                <span>3. Live Interactive Simulator</span>
+            </button>
+            <button onclick="switchTab('reflexion')" id="tab-reflexion" class="tab-btn px-4 py-3 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fas fa-brain text-cm-yellow"></i>
+                <span>4. Critical Reflection</span>
+            </button>
+            <button onclick="switchTab('evaluacion')" id="tab-evaluacion" class="tab-btn px-4 py-3 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fas fa-tasks text-cm-yellow"></i>
+                <span>5. Formative Evaluation</span>
+            </button>
+        </nav>
+
+        <!-- MAIN CONTENT LIENZO DE PIZARRA -->
+        <main class="flex-grow p-4 sm:p-6 overflow-y-auto">
+
+            <!-- ================= TAB 1: TEORÍA ================= -->
+            <section id="content-teoria" class="tab-content space-y-6">
+                <!-- Intro Card -->
+                <div class="bg-white p-5 rounded-xl border-l-8 border-cm-blue shadow-sm">
+                    <h2 class="text-2xl font-bold text-cm-blue mb-2 flex items-center gap-2">
+                        <i class="fas fa-utensils"></i> 1. Grammar Theory: Modal Verbs in a Restaurant Setting
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        When we visit a restaurant, we use special helper verbs called <strong class="text-cm-blue">Modal Verbs</strong> to express politeness, request items, make offers, and ask for recommendations. Using modal verbs correctly makes conversation polite and respectful!
+                    </p>
+                </div>
+
+                <!-- Modal Verbs Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    
+                    <!-- Would Like -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-blue shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-blue text-white text-xs font-bold px-2 py-1 rounded">Desire / Polite Order</span>
+                            <button onclick="speakText('I would like a ham and cheese sandwich, please.')" class="text-cm-blue hover:text-blue-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Would like / 'd like</h3>
+                        <p class="text-xs text-gray-500 mb-2">Used to make polite requests or order food.</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "I <strong>would like</strong> a lemonade, please."<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "We <strong>'d like</strong> a table for four."
+                        </div>
+                    </div>
+
+                    <!-- Could -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-teal shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-teal text-white text-xs font-bold px-2 py-1 rounded">Polite Request</span>
+                            <button onclick="speakText('Could I have the menu, please?')" class="text-cm-teal hover:text-teal-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Could</h3>
+                        <p class="text-xs text-gray-500 mb-2">Very polite way to ask for something from the waiter.</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>Could</strong> I see the dessert menu?"<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>Could</strong> we get extra napkins?"
+                        </div>
+                    </div>
+
+                    <!-- Can -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-olive shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-olive text-white text-xs font-bold px-2 py-1 rounded">Informal Request</span>
+                            <button onclick="speakText('Can I get a bottle of water?')" class="text-cm-olive hover:text-green-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Can</h3>
+                        <p class="text-xs text-gray-500 mb-2">Common and friendly request (slightly less formal than Could/May).</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>Can</strong> I have a cup of warm chocolate?"<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>Can</strong> we order now?"
+                        </div>
+                    </div>
+
+                    <!-- May -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-blue shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-blue text-white text-xs font-bold px-2 py-1 rounded">Formal Permission / Offer</span>
+                            <button onclick="speakText('May I take your order now?')" class="text-cm-blue hover:text-blue-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">May</h3>
+                        <p class="text-xs text-gray-500 mb-2">Used by servers to offer service politely.</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>May</strong> I take your order?"<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "<strong>May</strong> I clear these plates?"
+                        </div>
+                    </div>
+
+                    <!-- Should -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-teal shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-teal text-white text-xs font-bold px-2 py-1 rounded">Recommendation</span>
+                            <button onclick="speakText('You should try the chef special soup today.')" class="text-cm-teal hover:text-teal-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Should</h3>
+                        <p class="text-xs text-gray-500 mb-2">Used for recommendations or suggestions.</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "What <strong>should</strong> we order for dessert?"<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "You <strong>should</strong> try the pasta!"
+                        </div>
+                    </div>
+
+                    <!-- Must / Have to -->
+                    <div class="bg-white rounded-xl p-4 border-t-4 border-cm-olive shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-cm-olive text-white text-xs font-bold px-2 py-1 rounded">Obligation / Necessity</span>
+                            <button onclick="speakText('We must wash our hands before eating.')" class="text-cm-olive hover:text-green-800"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Must</h3>
+                        <p class="text-xs text-gray-500 mb-2">Used to express strong necessity or rules.</p>
+                        <div class="bg-cm-soft-white p-2.5 rounded border border-gray-200 text-sm font-medium">
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "We <strong>must</strong> pay the bill before leaving."<br>
+                            <i class="fas fa-comment-dots text-cm-teal mr-1"></i> "Customers <strong>must</strong> wash their hands."
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Politeness Meter Visual -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <h3 class="text-lg font-bold text-cm-blue mb-3"><i class="fas fa-tachometer-alt"></i> Politeness Scale in Restaurant Requests</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-gray-600">Direct / Casual: "Give me pizza."</span>
+                                <span class="text-red-500">Not recommended in restaurants!</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-red-400 h-2.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-gray-600">Friendly: "Can I have pizza, please?"</span>
+                                <span class="text-yellow-600">Good & Polite</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-cm-yellow h-2.5 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-gray-600">Very Polite: "Could I have pizza, please?" / "I would like pizza, please."</span>
+                                <span class="text-cm-blue">Excellent & Standard ESL Etiquette!</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-cm-blue h-2.5 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TAB 2: EJEMPLOS RESUELTOS (15) ================= -->
+            <section id="content-ejemplos" class="tab-content hidden space-y-6">
+                
+                <div class="bg-white p-4 rounded-xl border-l-6 border-cm-blue flex justify-between items-center shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-bold text-cm-blue">2. 15 Solved Examples with Audio & Grammar Breakdown</h2>
+                        <p class="text-xs text-gray-600">Click the speaker icon next to each sentence to listen to native pronunciation.</p>
+                    </div>
+                    <span class="bg-cm-yellow text-gray-900 font-bold px-3 py-1 rounded-full text-xs">5 Basic • 5 Intermediate • 5 Advanced</span>
+                </div>
+
+                <!-- LEVEL 1: BASIC EXAMPLES -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-cm-teal border-b-2 border-cm-teal pb-1 flex items-center gap-2">
+                        <span class="bg-cm-teal text-white px-2 py-0.5 rounded text-xs">Level 1</span> Basic Examples (Direct Requests & Orders)
+                    </h3>
+                    <div id="basic-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- LEVEL 2: INTERMEDIATE EXAMPLES -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-cm-blue border-b-2 border-cm-blue pb-1 flex items-center gap-2">
+                        <span class="bg-cm-blue text-white px-2 py-0.5 rounded text-xs">Level 2</span> Intermediate Examples (Conditional Requests & Server Interaction)
+                    </h3>
+                    <div id="intermediate-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- LEVEL 3: ADVANCED EXAMPLES -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-cm-olive border-b-2 border-cm-olive pb-1 flex items-center gap-2">
+                        <span class="bg-cm-olive text-white px-2 py-0.5 rounded text-xs">Level 3</span> Advanced Examples (Preferences, Recommendations & Problem Solving)
+                    </h3>
+                    <div id="advanced-examples-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 3: SIMULADOR INTERACTIVO CON VOZ DE IA ================= -->
+            <section id="content-simulador" class="tab-content hidden space-y-6">
+                
+                <!-- Restaurant Banner with High-Contrast Typography -->
+                <div class="bg-cm-blue text-white p-5 rounded-xl border-4 border-cm-yellow shadow-lg relative overflow-hidden">
+                    <div class="relative z-10 flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                            <span class="bg-cm-yellow text-gray-900 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block border border-black/10">
+                                Live Voice AI Experience
+                            </span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-wide">
+                                3. The Montano Bistro Speaking & Listening Simulator
+                            </h2>
+                            <p class="text-sm text-blue-100 max-w-2xl mt-1 font-medium">
+                                Practice real-life restaurant interactions! Select a scenario exercise below, click the microphone, and speak in English. Alex (AI Waiter) will evaluate your speech and modal verb usage!
+                            </p>
+                        </div>
+                        <div class="bg-white/15 backdrop-blur-md p-3.5 rounded-xl border border-white/30 text-center shadow-inner">
+                            <span class="text-xs uppercase text-cm-yellow font-extrabold block mb-1">Target Verbs to Practice:</span>
+                            <div id="bannerTargetModals" class="flex gap-1.5 flex-wrap justify-center text-xs">
+                                <span class="bg-cm-yellow text-gray-900 px-2 py-0.5 rounded font-extrabold shadow-sm">would like</span>
+                                <span class="bg-cm-yellow text-gray-900 px-2 py-0.5 rounded font-extrabold shadow-sm">could</span>
+                                <span class="bg-cm-yellow text-gray-900 px-2 py-0.5 rounded font-extrabold shadow-sm">can</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCENARIO SELECTION TOOLBAR (5 PRACTICAL EXERCISES) -->
+                <div class="bg-white p-4 rounded-xl border border-gray-300 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <h3 class="font-bold text-sm text-cm-blue uppercase tracking-wider flex items-center gap-2">
+                            <i class="fas fa-list-check text-cm-yellow text-lg"></i> Select Interactive Practice Scenario Exercise (1 to 5):
+                        </h3>
+                        <span id="activeScenarioBadge" class="bg-cm-teal text-white font-bold text-xs px-2.5 py-1 rounded-full">Scenario 1 Active</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5" id="scenarioContainer">
+                        <!-- Rendered dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- MAIN SIMULATOR INTERFACE -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Left 2 Cols: Live Conversation Stream -->
+                    <div class="lg:col-span-2 space-y-4">
+                        
+                        <!-- Control & Mic Action Header -->
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-2">
+                                <div>
+                                    <h3 class="font-bold text-cm-blue flex items-center gap-2 text-base">
+                                        <i class="fas fa-headset text-cm-yellow"></i> Live Roleplay with Alex (The Waiter)
+                                    </h3>
+                                    <p id="scenarioObjectiveText" class="text-xs text-gray-700 font-semibold mt-0.5">
+                                        Objective: Order a drink and ask for a menu using "Could I..." or "I would like..."
+                                    </p>
+                                </div>
+                                <button onclick="resetConversation()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 border border-gray-300">
+                                    <i class="fas fa-redo text-cm-blue"></i> Restart Scenario
+                                </button>
+                            </div>
+
+                            <!-- Microphone Interactive Zone -->
+                            <div class="bg-cm-soft-white p-4 rounded-xl border-2 border-dashed border-cm-light-blue flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                                    <button id="micBtn" onclick="toggleSpeechRecognition()" class="w-16 h-16 rounded-full bg-cm-blue hover:bg-blue-800 text-white flex items-center justify-center shadow-lg transition transform hover:scale-105 flex-shrink-0">
+                                        <i id="micIcon" class="fas fa-microphone text-2xl"></i>
+                                    </button>
+                                    <div>
+                                        <span id="micStatus" class="font-bold text-sm text-cm-blue block">Click Mic to Speak</span>
+                                        <span id="micSubStatus" class="text-xs text-gray-600 font-medium block">Say your response aloud in English!</span>
+                                    </div>
+                                </div>
+
+                                <!-- Text Input Fallback -->
+                                <div class="w-full sm:w-auto flex-grow max-w-sm flex gap-1.5">
+                                    <input type="text" id="textInputFallback" placeholder="Or type your response here in English..." class="w-full text-xs p-2.5 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-cm-blue outline-none font-medium placeholder-gray-500" onkeypress="if(event.key === 'Enter') sendTextMessage()">
+                                    <button onclick="sendTextMessage()" class="bg-cm-teal text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-opacity-90 transition flex-shrink-0">Send</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Conversation History Box -->
+                        <div class="bg-white p-4 rounded-xl border border-gray-300 shadow-sm min-h-[350px] max-h-[450px] overflow-y-auto space-y-3" id="liveChatHistory">
+                            <!-- Initial Waiter Message Injected dynamically -->
+                        </div>
+
+                    </div>
+
+                    <!-- Right 1 Col: Live Performance & Evaluation Dashboard -->
+                    <div class="space-y-4">
+                        
+                        <div class="bg-white p-4 rounded-xl border border-gray-300 shadow-sm space-y-4">
+                            <h3 class="font-bold text-cm-blue border-b pb-2 flex items-center gap-2 text-base">
+                                <i class="fas fa-chart-line text-cm-yellow"></i> Live Performance Dashboard
+                            </h3>
+
+                            <!-- Pronunciation Score Meter -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-gray-800">Pronunciation & Speech Clarity:</span>
+                                    <span id="scorePronunciation" class="text-cm-blue font-extrabold">-- %</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                                    <div id="barPronunciation" class="bg-cm-blue h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Verbs Usage Score -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-gray-800">Modal Verbs Accuracy:</span>
+                                    <span id="scoreGrammar" class="text-cm-teal font-extrabold">-- %</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                                    <div id="barGrammar" class="bg-cm-teal h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Politeness & Etiquette Score -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-gray-800">Politeness & Etiquette:</span>
+                                    <span id="scorePoliteness" class="text-cm-olive font-extrabold">-- %</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                                    <div id="barPoliteness" class="bg-cm-olive h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Detected Modal Verbs Badge Container -->
+                            <div class="bg-cm-soft-white p-3 rounded-lg border border-gray-300 space-y-1">
+                                <span class="text-xs font-bold text-gray-700 block">Detected Modal Verbs:</span>
+                                <div id="detectedModalsBox" class="flex flex-wrap gap-1 text-xs">
+                                    <span class="text-gray-500 italic text-[11px]">No speech detected yet</span>
+                                </div>
+                            </div>
+
+                            <!-- Teacher / AI Feedback Note -->
+                            <div class="bg-blue-50 border-l-4 border-cm-blue p-3 rounded-r-lg space-y-1">
+                                <span class="font-bold text-xs text-cm-blue flex items-center gap-1">
+                                    <i class="fas fa-lightbulb text-cm-yellow"></i> AI Pedagogical Feedback:
+                                </span>
+                                <p id="feedbackText" class="text-xs text-gray-800 leading-relaxed font-medium">
+                                    Select a scenario, click the microphone, and speak using target modal verbs to receive real-time feedback!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Reference Menu Card -->
+                        <div class="bg-cm-soft-white p-4 rounded-xl border border-cm-light-blue space-y-2">
+                            <h4 class="font-bold text-xs text-cm-blue uppercase tracking-wider flex items-center gap-1">
+                                <i class="fas fa-utensils"></i> Bistro Reference Vocabulary
+                            </h4>
+                            <ul class="text-xs space-y-1 text-gray-800 font-medium">
+                                <li>• <strong>Drinks:</strong> Lemonade, iced tea, sparkling water</li>
+                                <li>• <strong>Mains:</strong> Grilled salmon, chicken pasta, salad</li>
+                                <li>• <strong>Desserts:</strong> Apple pie, chocolate sundae</li>
+                                <li>• <strong>Courtesy:</strong> "Please", "Thank you", "Excuse me"</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 4: REFLEXIÓN CRÍTICA ================= -->
+            <section id="content-reflexion" class="tab-content hidden space-y-6">
+                
+                <div class="bg-white p-5 rounded-xl border-l-8 border-cm-yellow shadow-sm">
+                    <h2 class="text-2xl font-bold text-cm-blue mb-2 flex items-center gap-2">
+                        <i class="fas fa-brain text-cm-yellow"></i> 4. Critical Reflection & Pragmatics
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed text-sm">
+                        Language is not just about words; it is about human connection and respect! Reflect on how modal verbs change the tone of voice and social relationships in real-life situations.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- Reflection Question 1 -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-2 text-cm-blue font-bold">
+                            <span class="w-8 h-8 rounded-full bg-cm-blue text-white flex items-center justify-center text-sm">Q1</span>
+                            <h3>Politeness vs. Directness</h3>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Compare these two sentences: <br>
+                            <em class="text-red-600 font-semibold">1. "Give me a soda!"</em> vs. <em class="text-green-600 font-semibold">2. "Could I please have a soda?"</em><br>
+                            How do you think the waiter feels when listening to sentence 1 versus sentence 2? Why are modal verbs like <em>'could'</em> or <em>'would'</em> essential in restaurants?
+                        </p>
+                        <textarea class="w-full p-2.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-cm-blue focus:outline-none" rows="3" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                    <!-- Reflection Question 2 -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-2 text-cm-teal font-bold">
+                            <span class="w-8 h-8 rounded-full bg-cm-teal text-white flex items-center justify-center text-sm">Q2</span>
+                            <h3>Culture & Tone of Voice</h3>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            In Spanish, we often say <em>"Me da un vaso de agua, por favor"</em>. When translating to English, why is it better to say <em>"Would you bring me a glass of water?"</em> instead of <em>"You give me water"</em>?
+                        </p>
+                        <textarea class="w-full p-2.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-cm-teal focus:outline-none" rows="3" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                    <!-- Reflection Question 3 -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-2 text-cm-olive font-bold">
+                            <span class="w-8 h-8 rounded-full bg-cm-olive text-white flex items-center justify-center text-sm">Q3</span>
+                            <h3>Recommendations ('Should')</h3>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            When a waiter recommends: <em>"You should try our soup of the day"</em>, are they forcing you to buy it or giving a polite opinion? How does 'should' leave freedom to the customer?
+                        </p>
+                        <textarea class="w-full p-2.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-cm-olive focus:outline-none" rows="3" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                    <!-- Reflection Question 4 -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-2 text-cm-blue font-bold">
+                            <span class="w-8 h-8 rounded-full bg-cm-blue text-white flex items-center justify-center text-sm">Q4</span>
+                            <h3>Emergency or Rules ('Must')</h3>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Why do restaurant signs say <em>"Employees MUST wash hands"</em> instead of <em>"Employees COULD wash hands"</em>? Explain the difference in importance.
+                        </p>
+                        <textarea class="w-full p-2.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-cm-blue focus:outline-none" rows="3" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 5: EVALUACIÓN FORMATIVA ================= -->
+            <section id="content-evaluacion" class="tab-content hidden space-y-6">
+                
+                <div class="bg-white p-4 rounded-xl border-l-6 border-cm-blue flex justify-between items-center shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-bold text-cm-blue">5. Formative Evaluation - Step-by-Step Solutions</h2>
+                        <p class="text-xs text-gray-600">Test your modal verb skills in restaurant dialogues! Toggle solution buttons to check your answers.</p>
+                    </div>
+                    <span class="bg-cm-olive text-white font-bold px-3 py-1 rounded-full text-xs">15 Assessment Problems</span>
+                </div>
+
+                <div class="space-y-4" id="evaluationContainer">
+                    <!-- Questions injected dynamically -->
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- FOOTER / INSTITUTIONAL BRANDING -->
+        <footer class="bg-gray-100 border-t border-gray-300 p-3 text-center text-xs text-gray-600 flex flex-col sm:flex-row justify-between items-center px-6">
+            <span>© Colegio Montano • Department of Languages & ESL</span>
+            <span class="font-semibold text-cm-blue mt-1 sm:mt-0">Designed for Canvas Education • 5th Primary ESL</span>
+        </footer>
+
+    </div>
+
+    <script>
+        let ttsActive = true;
+        let synth = window.speechSynthesis;
+        let recognition = null;
+        let isRecording = false;
+
+        // Current Simulator Scenario Index
+        let currentScenarioIndex = 0;
+
+        // 5 Interactive Restaurant Scenarios
+        const scenariosData = [
+            {
+                id: 1,
+                title: "1. Drinks & Menu",
+                objective: "Order a drink and politely request the food menu.",
+                waiterGreeting: "Good afternoon! Welcome to Montano Bistro. May I take your drink order or bring you a menu?",
+                targetModals: ["would like", "could", "can"],
+                menuHints: ["Lemonade", "Iced Tea", "Water", "Food Menu"]
+            },
+            {
+                id: 2,
+                title: "2. Main Course & Dietary",
+                objective: "Order your main dish and request a dietary modification (e.g., dressing on the side or no onions).",
+                waiterGreeting: "Are you ready to order your main course today? Our chef recommends the chicken pasta or grilled salmon.",
+                targetModals: ["would like", "could I have", "without"],
+                menuHints: ["Pasta", "Grilled Salmon", "Sauce on side", "No onions"]
+            },
+            {
+                id: 3,
+                title: "3. Recommendation & Dessert",
+                objective: "Ask the waiter what dessert you 'should' order and select one politely.",
+                waiterGreeting: "I hope you enjoyed your main meal! Would you like to hear about our delicious dessert options?",
+                targetModals: ["should", "would like", "could"],
+                menuHints: ["What should I try?", "Chocolate cake", "Apple pie"]
+            },
+            {
+                id: 4,
+                title: "4. Table Assistance / Problem",
+                objective: "Ask politely for extra napkins, a fresh fork, or extra water.",
+                waiterGreeting: "Is everything going well with your table, or can I bring you anything extra?",
+                targetModals: ["could you", "can we", "may"],
+                menuHints: ["Extra napkins", "Fresh fork", "More water"]
+            },
+            {
+                id: 5,
+                title: "5. Asking for the Bill",
+                objective: "Ask for the check and inquire if payment 'must' be made in cash or card.",
+                waiterGreeting: "Thank you for dining with us today! Can I help you with anything else before I prepare the bill?",
+                targetModals: ["could we have", "must we", "can I pay"],
+                menuHints: ["The bill please", "Pay with card", "Pay cash"]
+            }
+        ];
+
+        // Data for Tab 2: 15 Solved Examples
+        const examplesData = {
+            basic: [
+                { num: 1, text: "Can I have a glass of water, please?", verb: "Can", usage: "Informal polite request for drinks/food.", explanation: "'Can' is used for simple, direct, polite requests." },
+                { num: 2, text: "I would like a cheese pizza.", verb: "Would like", usage: "Polite statement of desire/order.", explanation: "'Would like' is much softer and more polite than 'I want'." },
+                { num: 3, text: "May I sit here?", verb: "May", usage: "Formal request for permission.", explanation: "Asking permission to occupy a seat." },
+                { num: 4, text: "Could you bring more napkins?", verb: "Could", usage: "Polite request for assistance.", explanation: "'Could you' politely asks the server to perform an action." },
+                { num: 5, text: "We must pay cash here.", verb: "Must", usage: "Rule / Strong obligation.", explanation: "Indicates a strict requirement by the restaurant." }
+            ],
+            intermediate: [
+                { num: 6, text: "Could we please get a table near the window?", verb: "Could", usage: "Polite seating preference request.", explanation: "Combines 'could' with 'please' for courteous customer request." },
+                { num: 7, text: "May I offer you our dessert menu today?", verb: "May", usage: "Server offering service politely.", explanation: "Used by waiters to offer items graciously." },
+                { num: 8, text: "You should try the fresh orange juice; it's delicious!", verb: "Should", usage: "Recommendation.", explanation: "Suggesting a drink option without forcing the customer." },
+                { num: 9, text: "Would you like ice with your soda?", verb: "Would like", usage: "Server asking for customer preference.", explanation: "Standard polite question used by waiters." },
+                { num: 10, text: "Can we have the bill now, please?", verb: "Can", usage: "Requesting payment item.", explanation: "Asking the waiter to bring the check at the end of the meal." }
+            ],
+            advanced: [
+                { num: 11, text: "Should we order an appetizer first, or would you prefer main courses right away?", verb: "Should / Would", usage: "Group decision & preference consultation.", explanation: "Combining two modal verbs to organize a multi-course dining plan." },
+                { num: 12, text: "Could I have the dressing on the side because I am allergic to mustard?", verb: "Could", usage: "Special dietary request with reason.", explanation: "Politely requesting custom food preparation due to health restrictions." },
+                { num: 13, text: "You must not enter the kitchen area; it is restricted to staff.", verb: "Must not", usage: "Prohibition / Restaurant rule.", explanation: "Expresses a strict safety prohibition." },
+                { num: 14, text: "Would it be possible to get a gluten-free pasta option?", verb: "Would", usage: "Hypothetical polite query.", explanation: "Very polite way to inquire about special dietary availability." },
+                { num: 15, text: "May I clear these empty plates, or are you still finishing?", verb: "May", usage: "Server etiquette inquiry.", explanation: "Ensuring customer comfort before removing tableware." }
+            ]
+        };
+
+        // Data for Tab 5: 15 Assessment Exercises
+        const evalQuestions = [
+            { num: 1, level: "Basic", title: "Complete the polite request", prompt: "_____ I have a glass of orange juice, please?", options: ["A) Must", "B) Could", "C) Should"], answer: "B) Could", solution: "Step 1: Identify the context -> Making a polite request at a restaurant.<br>Step 2: 'Must' expresses obligation, 'Should' expresses recommendation, 'Could' expresses polite request.<br><strong>Correct Modal: Could.</strong>" },
+            { num: 2, level: "Basic", title: "Expressing food desire", prompt: "I _____ like a vegetable soup, please.", options: ["A) would", "B) may", "C) must"], answer: "A) would", solution: "Step 1: Recognize the phrase pattern: '_____ like'.<br>Step 2: The standard polite formula for ordering food is 'would like'.<br><strong>Correct Modal: would.</strong>" },
+            { num: 3, level: "Basic", title: "Server asking permission", prompt: "_____ I take your order now, sir?", options: ["A) Should", "B) May", "C) Would"], answer: "B) May", solution: "Step 1: The waiter is asking for formal permission.<br>Step 2: 'May I...' is the standard formal offer in restaurant service.<br><strong>Correct Modal: May.</strong>" },
+            { num: 4, level: "Basic", title: "Simple request", prompt: "_____ you bring me some salt, please?", options: ["A) Can", "B) Must", "C) May"], answer: "A) Can", solution: "Step 1: Asking someone to do an action ('bring me...').<br>Step 2: 'Can you...' or 'Could you...' are used for requests.<br><strong>Correct Modal: Can.</strong>" },
+            { num: 5, level: "Basic", title: "Restaurant rule", prompt: "All guests _____ pay for their meal before leaving.", options: ["A) should", "B) must", "C) could"], answer: "B) must", solution: "Step 1: Paying for food is a compulsory rule/obligation.<br>Step 2: 'Must' expresses mandatory obligation.<br><strong>Correct Modal: must.</strong>" },
+            
+            { num: 6, level: "Intermediate", title: "Choosing between politeness levels", prompt: "Which sentence is the MOST polite way to ask for the menu?", options: ["A) Give me the menu now.", "B) Can I see the menu?", "C) Could I please see the menu?"], answer: "C) Could I please see the menu?", solution: "Step 1: Option A is demanding/rude.<br>Step 2: Option B is friendly/casual.<br>Step 3: Option C combines 'Could' and 'please', representing the highest level of polite ESL etiquette.<br><strong>Correct Option: C.</strong>" },
+            { num: 7, level: "Intermediate", title: "Giving a waiter recommendation", prompt: "You _____ try the chef's special pasta; it is the best in town!", options: ["A) should", "B) must not", "C) may"], answer: "A) should", solution: "Step 1: Giving a friendly suggestion/recommendation.<br>Step 2: 'Should' is used to give recommendations.<br><strong>Correct Modal: should.</strong>" },
+            { num: 8, level: "Intermediate", title: "Table reservation request", prompt: "_____ we reserve a table for six people tonight?", options: ["A) Could", "B) Must", "C) Should"], answer: "A) Could", solution: "Step 1: Making a polite inquiry about availability.<br>Step 2: 'Could we reserve...' is the standard polite formulation.<br><strong>Correct Modal: Could.</strong>" },
+            { num: 9, level: "Intermediate", title: "Server inquiring about preference", prompt: "_____ you prefer tap water or bottled water?", options: ["A) May", "B) Would", "C) Can"], answer: "B) Would", solution: "Step 1: Pattern '_____ you prefer...'.<br>Step 2: 'Would you prefer...' asks politely about customer choices.<br><strong>Correct Modal: Would.</strong>" },
+            { num: 10, level: "Intermediate", title: "Expressing prohibition", prompt: "You _____ smoke inside the restaurant dining room.", options: ["A) shouldn't", "B) must not", "C) couldn't"], answer: "B) must not", solution: "Step 1: Smoking restriction is a strict legal rule.<br>Step 2: 'Must not' expresses strong prohibition.<br><strong>Correct Modal: must not.</strong>" },
+
+            { num: 11, level: "Advanced", title: "Dietary modification request", prompt: "_____ it be possible to substitute french fries for salad?", options: ["A) Would", "B) Must", "C) Should"], answer: "A) Would", solution: "Step 1: Highly polite conditional request pattern 'Would it be possible...'.<br>Step 2: Used when asking for menu modifications.<br><strong>Correct Modal: Would.</strong>" },
+            { num: 12, level: "Advanced", title: "Multiple modal analysis", prompt: "'We _____ leave a tip because the service was excellent, but we _____ check our bill first.'", options: ["A) should / must", "B) must / could", "C) should / should"], answer: "A) should / must", solution: "Step 1: Tipping is a recommended courtesy -> 'should'.<br>Step 2: Verifying the bill amount is necessary before paying -> 'must' or 'should'.<br><strong>Best combination: should / must.</strong>" },
+            { num: 13, level: "Advanced", title: "Correcting error in listening transcript", prompt: "Identify the mistake: 'May you bring me a fork?'", options: ["A) 'May' should be 'Could' or 'Can'.", "B) 'bring' should be 'brought'.", "C) 'me' should be 'I'."], answer: "A) 'May' should be 'Could' or 'Can'.", solution: "Step 1: Analysis: 'May' is used with 'I' or 'We' to ask permission ('May I...?').<br>Step 2: We do NOT ask 'May you...?' when asking someone else to do a favor. Use 'Could you...?' or 'Can you...?'.<br><strong>Correct Answer: A.</strong>" },
+            { num: 14, level: "Advanced", title: "Polite refusal response", prompt: "Waiter: 'Would you like some dessert?' Customer: 'No, thank you, I _____ eat another bite!'", options: ["A) couldn't", "B) mustn't", "C) shouldn't"], answer: "A) couldn't", solution: "Step 1: Expressing complete fullness / physical inability in a polite idiom.<br>Step 2: 'I couldn't eat another bite' is the standard polite expression.<br><strong>Correct Modal: couldn't.</strong>" },
+            { num: 15, level: "Advanced", title: "Comprehensive Dialogue Synthesis", prompt: "Which modal verb sequence correctly fills the blanks?\nServer: '_____ I help you?'\nCustomer: 'Yes, _____ I get a tea?'", options: ["A) May / could", "B) Must / should", "C) Would / may"], answer: "A) May / could", solution: "Step 1: Server offer -> 'May I help you?'<br>Step 2: Customer request -> 'Could I get...?'<br><strong>Correct Answer: A.</strong>" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderExamples();
+            renderEvaluation();
+            renderScenarioButtons();
+            loadScenario(0);
+            initSpeechRecognition();
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        function renderScenarioButtons() {
+            const container = document.getElementById('scenarioContainer');
+            container.innerHTML = scenariosData.map((sc, idx) => `
+                <button onclick="loadScenario(${idx})" id="scenario-btn-${idx}" class="scenario-card text-left p-2.5 rounded-lg border border-gray-200 bg-gray-50 hover:bg-blue-50 transition">
+                    <span class="font-bold text-xs text-cm-blue block">${sc.title}</span>
+                    <span class="text-[11px] text-gray-600 line-clamp-2 block leading-tight font-medium mt-0.5">${sc.objective}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadScenario(index) {
+            currentScenarioIndex = index;
+            const sc = scenariosData[index];
+
+            // Highlight button
+            document.querySelectorAll('.scenario-card').forEach(btn => btn.classList.remove('active-scenario'));
+            const activeBtn = document.getElementById(`scenario-btn-${index}`);
+            if (activeBtn) activeBtn.classList.add('active-scenario');
+
+            // Update Header & Badge
+            document.getElementById('activeScenarioBadge').innerText = `Scenario ${sc.id} Active`;
+            document.getElementById('scenarioObjectiveText').innerText = `Objective: ${sc.objective}`;
+
+            // Update Target Modals in Banner
+            document.getElementById('bannerTargetModals').innerHTML = sc.targetModals.map(m => `
+                <span class="bg-cm-yellow text-gray-900 px-2 py-0.5 rounded font-extrabold shadow-sm">${m}</span>
+            `).join('');
+
+            // Reset conversation with waiter greeting
+            resetConversation();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function speakText(text, pitch = 1.0, rate = 0.95) {
+            if (!ttsActive || !('speechSynthesis' in window)) return;
+
+            synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = rate;
+            utterance.pitch = pitch;
+
+            synth.speak(utterance);
+        }
+
+        function toggleAudioEngine() {
+            ttsActive = !ttsActive;
+            const btn = document.getElementById('audioToggleBtn');
+            if (ttsActive) {
+                btn.className = "bg-cm-teal hover:bg-opacity-80 text-white font-semibold py-1.5 px-3 rounded-lg text-sm flex items-center space-x-1 shadow transition";
+                btn.innerHTML = `<i class="fas fa-volume-up"></i><span class="hidden md:inline">TTS Audio: Active</span>`;
+            } else {
+                btn.className = "bg-gray-400 hover:bg-gray-500 text-white font-semibold py-1.5 px-3 rounded-lg text-sm flex items-center space-x-1 shadow transition";
+                btn.innerHTML = `<i class="fas fa-volume-mute"></i><span class="hidden md:inline">TTS Audio: Muted</span>`;
+                synth.cancel();
+            }
+        }
+
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById('micSubStatus').innerText = "Browser does not support Speech Recognition. Please type below!";
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                isRecording = true;
+                const micBtn = document.getElementById('micBtn');
+                micBtn.className = "w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg recording-pulse transition flex-shrink-0";
+                document.getElementById('micStatus').innerText = "Listening... Speak now!";
+                document.getElementById('micStatus').className = "font-bold text-sm text-red-600 block";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const confidence = event.results[0][0].confidence || 0.85;
+                processUserInput(transcript, confidence);
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Recognition Error:", event.error);
+                stopMicUI();
+                document.getElementById('micStatus').innerText = "Error listening. Try again or type below.";
+            };
+
+            recognition.onend = () => {
+                stopMicUI();
+            };
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
+                return;
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error("Recognition start error:", e);
+                }
+            }
+        }
+
+        function stopMicUI() {
+            isRecording = false;
+            const micBtn = document.getElementById('micBtn');
+            if (micBtn) {
+                micBtn.className = "w-16 h-16 rounded-full bg-cm-blue hover:bg-blue-800 text-white flex items-center justify-center shadow-lg transition transform hover:scale-105 flex-shrink-0";
+            }
+            document.getElementById('micStatus').innerText = "Click Mic to Speak";
+            document.getElementById('micStatus').className = "font-bold text-sm text-cm-blue block";
+        }
+
+        function sendTextMessage() {
+            const input = document.getElementById('textInputFallback');
+            const val = input.value.trim();
+            if (val) {
+                processUserInput(val, 0.95);
+                input.value = "";
+            }
+        }
+
+        async function processUserInput(userText, confidenceScore) {
+            // Add user message to UI chat history
+            appendChatMessage("student", userText);
+
+            // Set loading indicator
+            document.getElementById('feedbackText').innerHTML = `<i class="fas fa-spinner fa-spin text-cm-blue"></i> Evaluating speech & modal verbs with AI...`;
+
+            try {
+                // Call Gemini Flash API with scenario context
+                const result = await evaluateWithGeminiAI(userText, confidenceScore);
+
+                // Append Waiter response
+                appendChatMessage("waiter", result.waiterResponse);
+                speakText(result.waiterResponse, 0.9);
+
+                // Update Evaluation Dashboard
+                updateScoreDashboard(result, confidenceScore);
+
+            } catch (err) {
+                console.error("AI Evaluation fallback:", err);
+                // Rule-based fallback if API is unavailable
+                const fallbackResult = ruleBasedEvaluation(userText, confidenceScore);
+                appendChatMessage("waiter", fallbackResult.waiterResponse);
+                speakText(fallbackResult.waiterResponse, 0.9);
+                updateScoreDashboard(fallbackResult, confidenceScore);
+            }
+        }
+
+        function appendChatMessage(role, text) {
+            const container = document.getElementById('liveChatHistory');
+            const isWaiter = role === 'waiter';
+            const bubbleStyle = isWaiter ? 'speech-bubble-left' : 'speech-bubble-right';
+            const avatar = isWaiter ? '<i class="fas fa-user-tie"></i>' : '<i class="fas fa-user-graduate"></i>';
+            const name = isWaiter ? 'Alex (AI Waiter)' : 'You (Student)';
+            const pitch = isWaiter ? 0.9 : 1.1;
+
+            const html = `
+                <div class="flex items-start gap-3 p-2 rounded-lg">
+                    <div class="w-10 h-10 rounded-full ${isWaiter ? 'bg-blue-100 text-cm-blue' : 'bg-green-100 text-cm-teal'} flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                        ${avatar}
+                    </div>
+                    <div class="flex-grow p-3.5 ${bubbleStyle} shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-xs ${isWaiter ? 'text-cm-blue' : 'text-cm-teal'}">${name}</span>
+                            <button onclick="speakText('${text.replace(/'/g, "\\'")}', ${pitch})" class="text-xs text-gray-500 hover:text-cm-blue transition" title="Listen"><i class="fas fa-volume-up"></i></button>
+                        </div>
+                        <p class="text-sm text-gray-900 font-medium leading-relaxed">"${text}"</p>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function evaluateWithGeminiAI(userText, confidence) {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const currentScenario = scenariosData[currentScenarioIndex];
+
+            const systemPrompt = `You are Alex, a polite waiter at Montano Bistro, and an ESL evaluator for 5th primary students.
+Current Scenario Task: "${currentScenario.title} - ${currentScenario.objective}".
+Target Modal Verbs: ${currentScenario.targetModals.join(', ')}.
+
+Analyze student spoken input: "${userText}" (Speech confidence: ${confidence}).
+
+Respond strictly in valid JSON with these exact keys:
+{
+  "waiterResponse": "1-2 sentence polite waiter reply in English continuing the roleplay for this scenario.",
+  "modalVerbsUsed": ["array of modal verbs detected in user input, e.g. 'would like', 'could'"],
+  "grammarScore": integer 0-100 based on grammar & modal verb accuracy,
+  "politenessScore": integer 0-100 based on restaurant politeness ('please', 'could', 'would like' vs rude imperatives),
+  "pronunciationScore": integer 0-100 based on speech clarity & confidence,
+  "feedback": "1-2 sentences of encouraging ESL feedback on what they did well and how to improve in this scenario."
+}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userText }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: { responseMimeType: "application/json" }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("API call failed");
+
+            const data = await response.json();
+            const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            return JSON.parse(jsonText);
+        }
+
+        function ruleBasedEvaluation(userText, confidence) {
+            const lower = userText.toLowerCase();
+            const modals = [];
+            let grammarScore = 60;
+            let politenessScore = 50;
+
+            if (lower.includes('would like') || lower.includes("'d like")) { modals.push('would like'); grammarScore += 30; politenessScore += 35; }
+            if (lower.includes('could')) { modals.push('could'); grammarScore += 25; politenessScore += 30; }
+            if (lower.includes('can')) { modals.push('can'); grammarScore += 20; politenessScore += 20; }
+            if (lower.includes('may')) { modals.push('may'); grammarScore += 25; politenessScore += 25; }
+            if (lower.includes('should')) { modals.push('should'); grammarScore += 25; politenessScore += 25; }
+            if (lower.includes('must')) { modals.push('must'); grammarScore += 25; politenessScore += 25; }
+            if (lower.includes('please')) { politenessScore += 15; }
+
+            const pronScore = Math.min(100, Math.round(confidence * 100));
+            grammarScore = Math.min(100, grammarScore);
+            politenessScore = Math.min(100, politenessScore);
+
+            let reply = "Certainly! I will handle that for you right away. Is there anything else you need?";
+            if (lower.includes('menu')) reply = "Here is our menu! Our chef recommends the grilled salmon or pasta today.";
+            if (lower.includes('water') || lower.includes('lemonade') || lower.includes('tea')) reply = "Great drink choice! I'll bring that right out. Are you ready to order food?";
+
+            let feedback = modals.length > 0 ? 
+                `Excellent work using '${modals.join(', ')}'! Your statement was very polite.` : 
+                `Good try! Remember to use "I would like..." or "Could I..." to sound extra polite.`;
+
+            return {
+                waiterResponse: reply,
+                modalVerbsUsed: modals,
+                grammarScore: grammarScore,
+                politenessScore: politenessScore,
+                pronunciationScore: pronScore,
+                feedback: feedback
+            };
+        }
+
+        function updateScoreDashboard(data, confidence) {
+            const pron = data.pronunciationScore || Math.round(confidence * 100);
+            const gram = data.grammarScore || 70;
+            const poli = data.politenessScore || 70;
+
+            document.getElementById('scorePronunciation').innerText = `${pron}%`;
+            document.getElementById('barPronunciation').style.width = `${pron}%`;
+
+            document.getElementById('scoreGrammar').innerText = `${gram}%`;
+            document.getElementById('barGrammar').style.width = `${gram}%`;
+
+            document.getElementById('scorePoliteness').innerText = `${poli}%`;
+            document.getElementById('barPoliteness').style.width = `${poli}%`;
+
+            // Detected Modals
+            const modalsBox = document.getElementById('detectedModalsBox');
+            if (data.modalVerbsUsed && data.modalVerbsUsed.length > 0) {
+                modalsBox.innerHTML = data.modalVerbsUsed.map(m => `
+                    <span class="bg-cm-blue text-white font-bold px-2 py-0.5 rounded text-[11px] flex items-center gap-1"><i class="fas fa-check"></i> ${m}</span>
+                `).join('');
+            } else {
+                modalsBox.innerHTML = `<span class="text-red-600 font-semibold text-[11px]">No modal verbs detected. Try using "would like" or "could"!</span>`;
+            }
+
+            // Feedback
+            document.getElementById('feedbackText').innerText = data.feedback || "Keep practicing using polite modal verbs!";
+        }
+
+        function resetConversation() {
+            const sc = scenariosData[currentScenarioIndex];
+
+            document.getElementById('liveChatHistory').innerHTML = `
+                <div class="flex items-start gap-3 p-2 rounded-lg">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-cm-blue flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="flex-grow p-3.5 speech-bubble-left shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-xs text-cm-blue">Alex (AI Waiter)</span>
+                            <button onclick="speakText('${sc.waiterGreeting.replace(/'/g, "\\'")}', 0.9)" class="text-xs text-gray-500 hover:text-cm-blue transition"><i class="fas fa-volume-up"></i></button>
+                        </div>
+                        <p class="text-sm text-gray-900 font-medium leading-relaxed">"${sc.waiterGreeting}"</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('scorePronunciation').innerText = "-- %";
+            document.getElementById('barPronunciation').style.width = "0%";
+            document.getElementById('scoreGrammar').innerText = "-- %";
+            document.getElementById('barGrammar').style.width = "0%";
+            document.getElementById('scorePoliteness').innerText = "-- %";
+            document.getElementById('barPoliteness').style.width = "0%";
+            document.getElementById('detectedModalsBox').innerHTML = `<span class="text-gray-500 italic text-[11px]">No speech detected yet</span>`;
+            document.getElementById('feedbackText').innerHTML = `Click the microphone and speak your response using target modal verbs to receive real-time feedback!`;
+
+            // Read greeting out loud
+            speakText(sc.waiterGreeting, 0.9);
+        }
+
+        function renderExamples() {
+            const createCard = (item) => `
+                <div class="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-between space-y-2 hover:border-cm-light-blue transition">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-bold text-gray-400">#${item.num}</span>
+                        <button onclick="speakText('${item.text.replace(/'/g, "\\'")}')" class="text-cm-blue hover:text-blue-800 p-1 bg-blue-50 rounded-full w-8 h-8 flex items-center justify-center transition" title="Listen Sentence">
+                            <i class="fas fa-volume-up text-sm"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm font-bold text-gray-800">"${item.text}"</p>
+                    <div class="text-xs bg-cm-soft-white p-2 rounded text-gray-600 border border-gray-100">
+                        <span class="font-bold text-cm-blue">Modal Verb:</span> ${item.verb}<br>
+                        <span class="font-bold text-cm-teal">Function:</span> ${item.usage}<br>
+                        <span class="font-bold text-gray-700">Explanation:</span> ${item.explanation}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('basic-examples-list').innerHTML = examplesData.basic.map(createCard).join('');
+            document.getElementById('intermediate-examples-list').innerHTML = examplesData.intermediate.map(createCard).join('');
+            document.getElementById('advanced-examples-list').innerHTML = examplesData.advanced.map(createCard).join('');
+        }
+
+        function renderEvaluation() {
+            const container = document.getElementById('evaluationContainer');
+            container.innerHTML = evalQuestions.map(q => {
+                const levelColor = q.level === 'Basic' ? 'bg-cm-teal' : (q.level === 'Intermediate' ? 'bg-cm-blue' : 'bg-cm-olive');
+
+                return `
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <span class="${levelColor} text-white font-bold text-xs px-2.5 py-1 rounded-full">${q.level} • Q${q.num}</span>
+                                <h3 class="font-bold text-gray-800 text-sm">${q.title}</h3>
+                            </div>
+                            <button onclick="toggleSolution('sol-${q.num}')" class="bg-cm-yellow hover:bg-yellow-400 text-gray-900 font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>Show / Hide Solution</span>
+                            </button>
+                        </div>
+
+                        <p class="text-sm text-gray-700 whitespace-pre-line font-medium">${q.prompt}</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                            ${q.options.map(opt => `<div class="bg-cm-soft-white p-2 rounded text-xs font-semibold text-gray-700 border border-gray-200">${opt}</div>`).join('')}
+                        </div>
+
+                        <div id="sol-${q.num}" class="hidden mt-3 p-3 bg-blue-50 border-l-4 border-cm-blue rounded text-xs space-y-1">
+                            <div class="font-bold text-cm-blue flex items-center gap-1">
+                                <i class="fas fa-check-circle"></i> Correct Answer: ${q.answer}
+                            </div>
+                            <div class="text-gray-700 leading-relaxed pt-1">
+                                ${q.solution}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
